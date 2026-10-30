@@ -25,8 +25,8 @@ export const site = {
   publicEmail: "",
 
   socials: {
-    github: { label: "GitHub", href: "" }, // e.g. "https://github.com/your-username"
-    linkedin: { label: "LinkedIn", href: "" }, // e.g. "https://www.linkedin.com/in/your-handle"
+    github: { label: "GitHub", href: "https://github.com/axelblaze33" },
+    linkedin: { label: "LinkedIn", href: "https://www.linkedin.com/in/pranav-malshikhare/" },
   },
 
   /**

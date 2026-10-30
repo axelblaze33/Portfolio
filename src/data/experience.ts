@@ -9,8 +9,8 @@ export const experience: ExperienceEntry[] = [
   {
     id: "current-role",
     role: "Software Engineer",
-    company: "[Company name]",
-    period: "[Start month, year] — Present",
+    company: "ezAtlas",
+    period: "July 2024 — Present",
     location: "Pune, Maharashtra, India",
     summary:
       "Developing and maintaining production Angular applications, from new features to support tickets and business reports.",
