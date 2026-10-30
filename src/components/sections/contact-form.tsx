@@ -1,0 +1,235 @@
+"use client";
+
+import { CircleAlert, CircleCheck, LoaderCircle, Send } from "lucide-react";
+import { AnimatePresence, m } from "motion/react";
+import Link from "next/link";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import {
+  contactSchema,
+  LIMITS,
+  toFieldErrors,
+  type ContactField,
+  type ContactInput,
+  type ContactResponse,
+  type FieldErrors,
+} from "@/lib/validation";
+
+type Status =
+  | { kind: "idle" }
+  | { kind: "submitting" }
+  | { kind: "success"; message: string }
+  | { kind: "error"; message: string };
+
+const EMPTY: ContactInput = { name: "", email: "", subject: "", message: "" };
+
+const FIELDS: { name: ContactField; label: string; type?: string; autoComplete: string; placeholder: string }[] = [
+  { name: "name", label: "Name", autoComplete: "name", placeholder: "Your name" },
+  { name: "email", label: "Email", type: "email", autoComplete: "email", placeholder: "you@example.com" },
+  { name: "subject", label: "Subject", autoComplete: "off", placeholder: "What's this about?" },
+];
+
+const inputClass =
+  "w-full rounded-xl border bg-bg/50 px-4 py-3 text-base text-fg sm:text-[15px] placeholder:text-fg-subtle transition-[border-color,box-shadow] outline-none focus:border-accent focus:ring-4 focus:ring-accent/15 aria-[invalid=true]:border-[#f87171]";
+
+export function ContactForm() {
+  const id = useId();
+  const [values, setValues] = useState<ContactInput>(EMPTY);
+  const [errors, setErrors] = useState<FieldErrors>({});
+  const [status, setStatus] = useState<Status>({ kind: "idle" });
+  const openedAt = useRef(0);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    openedAt.current = performance.now();
+  }, []);
+
+  function validateField(name: ContactField, value: string) {
+    const result = contactSchema.shape[name].safeParse(value);
+    setErrors((prev) => ({ ...prev, [name]: result.success ? undefined : result.error.issues[0]?.message }));
+  }
+
+  function update(name: ContactField, value: string) {
+    setValues((v) => ({ ...v, [name]: value }));
+    if (errors[name]) validateField(name, value);
+    if (status.kind === "error" || status.kind === "success") setStatus({ kind: "idle" });
+  }
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (status.kind === "submitting") return;
+
+    const parsed = contactSchema.safeParse(values);
+    if (!parsed.success) {
+      const fieldErrors = toFieldErrors(parsed.error);
+      setErrors(fieldErrors);
+      const first = (Object.keys(fieldErrors) as ContactField[])[0];
+      formRef.current?.querySelector<HTMLElement>(`[name="${first}"]`)?.focus();
+      return;
+    }
+
+    const honeypot = new FormData(e.currentTarget).get("company_website");
+    setStatus({ kind: "submitting" });
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...values,
+          company_website: typeof honeypot === "string" ? honeypot : "",
+          elapsedMs: Math.round(performance.now() - openedAt.current),
+        }),
+      });
+      const data = (await res.json().catch(() => null)) as ContactResponse | null;
+
+      if (res.ok && data?.ok) {
+        setStatus({ kind: "success", message: data.message });
+        setValues(EMPTY);
+        setErrors({});
+        return;
+      }
+      if (data && !data.ok && data.fieldErrors) setErrors(data.fieldErrors);
+      setStatus({
+        kind: "error",
+        message: data?.message ?? "Something went wrong. Please try again in a moment.",
+      });
+    } catch {
+      setStatus({ kind: "error", message: "Network error — check your connection and try again." });
+    }
+  }
+
+  const submitting = status.kind === "submitting";
+  const messageLength = values.message.length;
+
+  return (
+    <form ref={formRef} onSubmit={onSubmit} noValidate className="glass relative overflow-hidden rounded-3xl shadow-card" aria-describedby={`${id}-privacy`}>
+      <div className="flex items-center justify-between border-b border-line px-5 py-3 font-mono text-xs text-fg-subtle sm:px-7">
+        <span>
+          <span className="text-accent">~/</span>message.compose
+        </span>
+        <span aria-hidden="true">● ● ●</span>
+      </div>
+
+      <div className="grid gap-5 p-5 sm:grid-cols-2 sm:p-7">
+        {FIELDS.map((f) => (
+          <div key={f.name} className={f.name === "subject" ? "sm:col-span-2" : ""}>
+            <label htmlFor={`${id}-${f.name}`} className="mb-2 block text-sm font-medium text-fg">
+              {f.label} <span className="text-accent" aria-hidden="true">*</span>
+            </label>
+            <input
+              id={`${id}-${f.name}`}
+              name={f.name}
+              type={f.type ?? "text"}
+              autoComplete={f.autoComplete}
+              placeholder={f.placeholder}
+              required
+              maxLength={LIMITS[f.name].max}
+              value={values[f.name]}
+              onChange={(e) => update(f.name, e.target.value)}
+              onBlur={(e) => e.target.value && validateField(f.name, e.target.value)}
+              aria-invalid={errors[f.name] ? true : undefined}
+              aria-describedby={errors[f.name] ? `${id}-${f.name}-error` : undefined}
+              className={`${inputClass} border-line`}
+              disabled={submitting}
+            />
+            {errors[f.name] && (
+              <p id={`${id}-${f.name}-error`} className="mt-1.5 text-sm text-[#f87171]">
+                {errors[f.name]}
+              </p>
+            )}
+          </div>
+        ))}
+
+        <div className="sm:col-span-2">
+          <div className="mb-2 flex items-baseline justify-between">
+            <label htmlFor={`${id}-message`} className="text-sm font-medium text-fg">
+              Message <span className="text-accent" aria-hidden="true">*</span>
+            </label>
+            <span id={`${id}-message-count`} className={`font-mono text-xs ${messageLength > LIMITS.message.max * 0.9 ? "text-accent-3" : "text-fg-subtle"}`}>
+              {messageLength}/{LIMITS.message.max}
+            </span>
+          </div>
+          <textarea
+            id={`${id}-message`}
+            name="message"
+            rows={6}
+            required
+            maxLength={LIMITS.message.max}
+            placeholder="Tell me a little about your project, role or idea…"
+            value={values.message}
+            onChange={(e) => update("message", e.target.value)}
+            onBlur={(e) => e.target.value && validateField("message", e.target.value)}
+            aria-invalid={errors.message ? true : undefined}
+            aria-describedby={`${errors.message ? `${id}-message-error ` : ""}${id}-message-count`}
+            className={`${inputClass} min-h-40 resize-y border-line`}
+            disabled={submitting}
+          />
+          {errors.message && (
+            <p id={`${id}-message-error`} className="mt-1.5 text-sm text-[#f87171]">
+              {errors.message}
+            </p>
+          )}
+        </div>
+
+        {/* Honeypot: invisible to people and assistive tech, tempting to bots. */}
+        <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+          <label htmlFor={`${id}-hp`}>Leave this field empty</label>
+          <input id={`${id}-hp`} type="text" name="company_website" tabIndex={-1} autoComplete="off" defaultValue="" />
+        </div>
+
+        <div className="flex flex-col gap-4 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+          <p id={`${id}-privacy`} className="max-w-sm text-xs leading-relaxed text-fg-subtle">
+            Your message is emailed to me and not stored on this site.{" "}
+            <Link href="/privacy" className="underline underline-offset-2 hover:text-fg">
+              Privacy notice
+            </Link>
+            .
+          </p>
+          <button
+            type="submit"
+            disabled={submitting}
+            aria-disabled={submitting}
+            className="group inline-flex min-h-12 w-full shrink-0 items-center justify-center gap-2 rounded-full bg-fg px-7 text-sm font-medium text-bg transition-[transform,box-shadow,opacity] hover:-translate-y-0.5 hover:shadow-[0_12px_40px_-12px_var(--accent)] active:scale-[0.97] disabled:opacity-70 sm:w-auto"
+          >
+            {submitting ? (
+              <>
+                <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
+                Sending…
+              </>
+            ) : (
+              <>
+                Send message
+                <Send className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+              </>
+            )}
+          </button>
+        </div>
+
+        <div aria-live="polite" role="status" className="sm:col-span-2">
+          <AnimatePresence>
+            {(status.kind === "success" || status.kind === "error") && (
+              <m.div
+                key={status.kind}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className={`flex items-start gap-3 rounded-xl border px-4 py-3 text-sm ${
+                  status.kind === "success"
+                    ? "border-accent-3/40 bg-accent-3/10 text-fg"
+                    : "border-[#f87171]/40 bg-[#f87171]/10 text-fg"
+                }`}
+              >
+                {status.kind === "success" ? (
+                  <CircleCheck className="mt-0.5 size-4 shrink-0 text-accent-3" aria-hidden="true" />
+                ) : (
+                  <CircleAlert className="mt-0.5 size-4 shrink-0 text-[#f87171]" aria-hidden="true" />
+                )}
+                {status.message}
+              </m.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </form>
+  );
+}
