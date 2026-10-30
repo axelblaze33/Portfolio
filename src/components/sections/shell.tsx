@@ -27,6 +27,7 @@ const HELP: [string, string][] = [
   ["experience", "where I'm shipping code"],
   ["contact", "jump to the contact form"],
   ["goto <section>", "scroll to any section"],
+  ["status", "run a systems check"],
   ["theme", "toggle light / dark"],
   ["clear", "clear the screen"],
 ];
@@ -43,9 +44,9 @@ export function Shell({ resumeHref, socials }: ShellProps) {
       id: 0,
       out: (
         <>
-          Welcome to <Accent>pranav.sh</Accent> — an interactive way to explore this site.
+          <Accent>A.T.L.A.S.</Accent> online. All systems nominal.
           <br />
-          Type <Accent>help</Accent> to see what you can do, or tap a suggestion below.
+          I&apos;m this site&apos;s assistant. Type <Accent>help</Accent> to see what I can do, or tap a suggestion below.
         </>
       ),
     },
@@ -64,7 +65,7 @@ export function Shell({ resumeHref, socials }: ShellProps) {
     if (log) log.scrollTop = log.scrollHeight;
   }, [entries]);
 
-  const commands = ["help", "whoami", "about", "skills", "projects", "open", "experience", "contact", "goto", "theme", "clear", "socials", "resume", "sudo", "date", "echo", "ls"];
+  const commands = ["help", "whoami", "about", "skills", "projects", "open", "experience", "contact", "goto", "status", "theme", "clear", "socials", "resume", "sudo", "date", "echo", "ls"];
 
   function respond(raw: string): ReactNode | "clear" {
     const [name = "", ...args] = raw.trim().split(/\s+/);
@@ -150,6 +151,23 @@ export function Shell({ resumeHref, socials }: ShellProps) {
         router.push(`/#${target.id}`);
         return <>Scrolling to {target.label}…</>;
       }
+      case "status":
+        return (
+          <div className="space-y-1">
+            <p>
+              <Accent>[ OK ]</Accent> interface · Angular
+            </p>
+            <p>
+              <Accent>[ OK ]</Accent> data link · REST APIs + SQL
+            </p>
+            <p>
+              <Accent>[ .. ]</Accent> upgrade in progress · Python, FastAPI, RAG
+            </p>
+            <p>
+              <Muted>All systems nominal.</Muted>
+            </p>
+          </div>
+        );
       case "theme":
         toggleTheme();
         return <>Theme switched.</>;
@@ -175,7 +193,7 @@ export function Shell({ resumeHref, socials }: ShellProps) {
         window.open(resumeHref, "_blank", "noopener");
         return <>Opening résumé…</>;
       case "sudo":
-        return <>Nice try. Permission denied — but you can still <Accent>contact</Accent> me.</>;
+        return <>Access denied. This suit only answers to its owner — but you can still <Accent>contact</Accent> me.</>;
       case "date":
         return new Date().toString();
       case "echo":
@@ -236,7 +254,7 @@ export function Shell({ resumeHref, socials }: ShellProps) {
         <span className="size-3 rounded-full bg-[#ff5f57]/80" aria-hidden="true" />
         <span className="size-3 rounded-full bg-[#febc2e]/80" aria-hidden="true" />
         <span className="size-3 rounded-full bg-[#28c840]/80" aria-hidden="true" />
-        <span className="ml-3 text-xs text-fg-subtle">pranav.sh — interactive</span>
+        <span className="ml-3 text-xs text-fg-subtle">a.t.l.a.s. — site assistant</span>
       </div>
 
       {/* Clicking anywhere in the body focuses the prompt, like a real terminal. */}

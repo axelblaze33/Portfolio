@@ -16,10 +16,10 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 72,
-          background: "#060912",
+          background: "#08070a",
           backgroundImage:
             "radial-gradient(circle at 85% 15%, rgba(162,139,255,0.35), transparent 45%), radial-gradient(circle at 10% 95%, rgba(94,225,249,0.25), transparent 40%)",
-          color: "#e8ecf7",
+          color: "#f4efe8",
           fontFamily: "sans-serif",
         }}
       >
@@ -30,7 +30,7 @@ export default function OpenGraphImage() {
               width: 64,
               height: 64,
               borderRadius: 18,
-              border: "3px solid #5ee1f9",
+              border: "3px solid #f5b83d",
               alignItems: "center",
               justifyContent: "center",
               fontSize: 28,
@@ -39,13 +39,13 @@ export default function OpenGraphImage() {
           >
             PM
           </div>
-          <div style={{ display: "flex", fontSize: 26, color: "#a3adc8" }}>{site.location}</div>
+          <div style={{ display: "flex", fontSize: 26, color: "#bcb0a6" }}>{site.location}</div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ display: "flex", fontSize: 30, color: "#5ee1f9", marginBottom: 18 }}>{site.title}</div>
+          <div style={{ display: "flex", fontSize: 30, color: "#f5b83d", marginBottom: 18 }}>{site.title}</div>
           <div style={{ display: "flex", fontSize: 92, fontWeight: 700, letterSpacing: -3, lineHeight: 1 }}>{site.name}</div>
-          <div style={{ display: "flex", fontSize: 36, color: "#a3adc8", marginTop: 28, maxWidth: 900 }}>
+          <div style={{ display: "flex", fontSize: 36, color: "#bcb0a6", marginTop: 28, maxWidth: 900 }}>
             {site.headline}
           </div>
         </div>
@@ -60,7 +60,7 @@ export default function OpenGraphImage() {
                 borderRadius: 999,
                 border: "1px solid rgba(148,163,210,0.3)",
                 fontSize: 22,
-                color: "#e8ecf7",
+                color: "#f4efe8",
               }}
             >
               {t}

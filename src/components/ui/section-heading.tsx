@@ -18,9 +18,14 @@ export function SectionHeading({ index, label, id, title, intro, align = "left",
       <p
         className={`mb-5 flex items-center gap-3 font-mono text-xs tracking-[0.18em] text-fg-subtle uppercase ${centered ? "justify-center" : ""}`}
       >
-        <span className="text-accent">{index}</span>
-        <span className="h-px w-8 bg-line-strong" aria-hidden="true" />
+        <span>
+          <span aria-hidden="true">[ </span>
+          <span className="text-accent">{index}</span>
+          <span aria-hidden="true"> ]</span>
+        </span>
+        <span className="h-px w-8 bg-linear-to-r from-accent/70 to-transparent" aria-hidden="true" />
         {label}
+        <span className="status-ping size-1.5 rounded-[1px] bg-accent-2" aria-hidden="true" />
       </p>
       <h2 id={id} className="text-4xl leading-[1.05] font-semibold tracking-[-0.035em] text-balance sm:text-5xl lg:text-6xl">
         {title}
@@ -32,5 +37,5 @@ export function SectionHeading({ index, label, id, title, intro, align = "left",
 
 /** Serif italic accent used inside headings. */
 export function Accent({ children }: { children: ReactNode }) {
-  return <em className="text-gradient pr-1 font-serif font-normal tracking-normal">{children}</em>;
+  return <em className="text-gradient pr-1 font-display font-semibold tracking-[-0.01em]">{children}</em>;
 }

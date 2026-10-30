@@ -72,6 +72,16 @@ export function HeroVisual() {
 
   return (
     <div aria-hidden="true" className="relative mx-auto aspect-square w-[90%] max-w-[34rem] select-none sm:w-full">
+      {/* Targeting frame and readouts */}
+      <div className="absolute inset-[3%] hidden sm:block">
+        <span className="absolute top-0 left-0 size-8 border-t-2 border-l-2 border-accent/50" />
+        <span className="absolute top-0 right-0 size-8 border-t-2 border-r-2 border-accent/50" />
+        <span className="absolute bottom-0 left-0 size-8 border-b-2 border-l-2 border-accent/50" />
+        <span className="absolute right-0 bottom-0 size-8 border-r-2 border-b-2 border-accent/50" />
+        <span className="absolute -top-6 left-0 font-mono text-[10px] tracking-[0.2em] text-accent/80">SYS.ONLINE</span>
+        <span className="absolute -top-6 right-0 font-mono text-[10px] tracking-[0.2em] text-fg-subtle">PWR 100%</span>
+      </div>
+
       {/* Tilted ground plane for depth */}
       <div className="absolute inset-[8%] [perspective:900px]">
         <div
@@ -120,11 +130,14 @@ export function HeroVisual() {
 
       {/* Core */}
       <Depth px={px} py={py} depth={6} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div className="relative grid size-24 place-items-center sm:size-28">
-          <div className="absolute inset-0 rounded-[28px] bg-gradient-to-br from-accent/40 to-accent-2/40 blur-2xl" />
-          <div className="glass relative grid size-full place-items-center rounded-[28px]">
-            <span className="text-gradient font-serif text-5xl italic sm:text-6xl">PM</span>
-          </div>
+        <div className="relative grid size-28 place-items-center sm:size-36">
+          <div className="reactor-pulse absolute -inset-6 rounded-full bg-accent-3/25 blur-2xl" />
+          <div className="absolute inset-0 rounded-full border border-accent/40 bg-bg-elevated/80 shadow-[inset_0_0_30px_-6px_var(--accent-3)]" />
+          <div className="reactor-ring absolute inset-[6%] rounded-full" />
+          <div className="absolute inset-[30%] rounded-full border-2 border-accent-3/80 shadow-[0_0_22px_var(--accent-3),inset_0_0_14px_var(--accent-3)]" />
+          <span className="relative font-display text-xl font-bold tracking-wider text-accent-3 [text-shadow:0_0_14px_var(--accent-3)] sm:text-2xl">
+            PM
+          </span>
         </div>
       </Depth>
 
@@ -151,8 +164,8 @@ export function HeroVisual() {
         </CodeChip>
       </Depth>
 
-      {/* Terminal */}
-      <Depth px={px} py={py} depth={10} className="absolute bottom-0 left-[4%] w-[78%] sm:left-[2%] sm:w-[64%]">
+      {/* Terminal (hidden on phones, where it would cover the reactor core) */}
+      <Depth px={px} py={py} depth={10} className="absolute bottom-0 left-[2%] hidden w-[64%] sm:block">
         <Terminal />
       </Depth>
     </div>

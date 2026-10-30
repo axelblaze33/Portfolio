@@ -22,7 +22,7 @@ function Headline() {
       {words.map((word, n) => (
         <span key={n}>
           <span
-            className={`rise-word ${n >= accentFrom ? "text-gradient font-serif font-normal tracking-[-0.01em] italic" : ""}`}
+            className={`rise-word ${n >= accentFrom ? "text-gradient font-display font-semibold tracking-[-0.02em] italic" : ""}`}
             style={i(n)}
           >
             {word}

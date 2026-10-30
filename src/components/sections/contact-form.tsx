@@ -189,7 +189,7 @@ export function ContactForm() {
             type="submit"
             disabled={submitting}
             aria-disabled={submitting}
-            className="group inline-flex min-h-12 w-full shrink-0 items-center justify-center gap-2 rounded-full bg-fg px-7 text-sm font-medium text-bg transition-[transform,box-shadow,opacity] hover:-translate-y-0.5 hover:shadow-[0_12px_40px_-12px_var(--accent)] active:scale-[0.97] disabled:opacity-70 sm:w-auto"
+            className="group inline-flex min-h-12 w-full shrink-0 items-center justify-center gap-2 rounded-full bg-accent px-7 text-sm font-medium text-accent-ink transition-[transform,box-shadow,opacity] hover:-translate-y-0.5 hover:shadow-[0_12px_40px_-12px_var(--accent)] active:scale-[0.97] disabled:opacity-70 sm:w-auto"
           >
             {submitting ? (
               <>

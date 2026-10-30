@@ -7,46 +7,46 @@
 :root,
 [data-theme="dark"] {
   color-scheme: dark;
-  --bg: #060912;
-  --bg-elevated: #0b1020;
-  --surface: rgb(18 25 46 / 0.55);
-  --surface-strong: #10172b;
-  --line: rgb(148 163 210 / 0.12);
-  --line-strong: rgb(148 163 210 / 0.22);
-  --fg: #e8ecf7;
-  --fg-muted: #a3adc8;
-  --fg-subtle: #7b86a3;
-  --accent: #5ee1f9; /* electric cyan */
-  --accent-2: #a28bff; /* violet */
-  --accent-3: #c5f26a; /* restrained lime */
-  --accent-ink: #04121a;
-  --glow-1: rgb(94 225 249 / 0.16);
-  --glow-2: rgb(162 139 255 / 0.18);
-  --grid: rgb(148 163 210 / 0.06);
+  --bg: #08070a;
+  --bg-elevated: #110d10;
+  --surface: rgb(34 22 24 / 0.55);
+  --surface-strong: #1a1215;
+  --line: rgb(255 210 170 / 0.1);
+  --line-strong: rgb(255 210 170 / 0.2);
+  --fg: #f4efe8;
+  --fg-muted: #bcb0a6;
+  --fg-subtle: #8f837a;
+  --accent: #f5b83d; /* armour gold */
+  --accent-2: #e8323c; /* hot-rod red */
+  --accent-3: #62e6ff; /* reactor blue */
+  --accent-ink: #1a0f00;
+  --glow-1: rgb(232 50 60 / 0.17);
+  --glow-2: rgb(245 184 61 / 0.12);
+  --grid: rgb(255 200 150 / 0.05);
   --noise-opacity: 0.06;
-  --shadow: 0 30px 80px -30px rgb(0 0 0 / 0.7);
+  --shadow: 0 30px 80px -30px rgb(0 0 0 / 0.75);
 }
 
 [data-theme="light"] {
   color-scheme: light;
-  --bg: #f5f7fc;
+  --bg: #f8f5f0;
   --bg-elevated: #ffffff;
-  --surface: rgb(255 255 255 / 0.7);
+  --surface: rgb(255 255 255 / 0.72);
   --surface-strong: #ffffff;
-  --line: rgb(30 41 82 / 0.1);
-  --line-strong: rgb(30 41 82 / 0.18);
-  --fg: #0c1224;
-  --fg-muted: #46506b;
-  --fg-subtle: #5f6985;
-  --accent: #0a7fa3;
-  --accent-2: #6a4fe0;
-  --accent-3: #4d7c0f;
+  --line: rgb(70 35 20 / 0.1);
+  --line-strong: rgb(70 35 20 / 0.18);
+  --fg: #17100c;
+  --fg-muted: #54463e;
+  --fg-subtle: #6b5d55;
+  --accent: #9a5800;
+  --accent-2: #b91c2b;
+  --accent-3: #0e7490;
   --accent-ink: #ffffff;
-  --glow-1: rgb(14 165 233 / 0.12);
-  --glow-2: rgb(124 58 237 / 0.1);
-  --grid: rgb(30 41 82 / 0.06);
+  --glow-1: rgb(220 38 38 / 0.09);
+  --glow-2: rgb(245 158 11 / 0.12);
+  --grid: rgb(70 35 20 / 0.06);
   --noise-opacity: 0.035;
-  --shadow: 0 30px 70px -35px rgb(30 41 82 / 0.35);
+  --shadow: 0 30px 70px -35px rgb(70 35 20 / 0.3);
 }
 
 @theme inline {
@@ -66,7 +66,7 @@
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
-  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
+  --font-display: var(--font-chakra-petch), var(--font-geist-sans), ui-sans-serif, sans-serif;
 
   --shadow-card: var(--shadow);
 }
@@ -91,6 +91,11 @@ body {
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
+h1,
+h2 {
+  font-family: var(--font-display);
+}
+
 ::selection {
   background: color-mix(in oklab, var(--accent) 35%, transparent);
   color: var(--fg);
@@ -100,6 +105,15 @@ body {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 6px;
+}
+
+/* The HUD cursor replaces the native arrow; text fields keep their I-beam. */
+.hud-cursor,
+.hud-cursor * {
+  cursor: none !important;
+}
+.hud-cursor :is(input, textarea, [contenteditable="true"]) {
+  cursor: text !important;
 }
 
 /* Theme toggle shows the icon for the theme you would switch to. */
@@ -207,6 +221,23 @@ body {
   opacity: 1;
 }
 
+/* HUD corner brackets on interactive cards (inset so rounded corners don't clip them). */
+.spotlight {
+  --bracket: color-mix(in oklab, var(--accent) 55%, transparent);
+  background-image:
+    linear-gradient(var(--bracket) 0 0), linear-gradient(var(--bracket) 0 0),
+    linear-gradient(var(--bracket) 0 0), linear-gradient(var(--bracket) 0 0),
+    linear-gradient(var(--bracket) 0 0), linear-gradient(var(--bracket) 0 0),
+    linear-gradient(var(--bracket) 0 0), linear-gradient(var(--bracket) 0 0);
+  background-size: 14px 1.5px, 1.5px 14px;
+  background-position:
+    left 10px top 10px, left 10px top 10px,
+    right 10px top 10px, right 10px top 10px,
+    left 10px bottom 10px, left 10px bottom 10px,
+    right 10px bottom 10px, right 10px bottom 10px;
+  background-repeat: no-repeat;
+}
+
 /* Glowing hairline between home page sections. */
 main > section:not(:first-of-type) {
   position: relative;
@@ -251,6 +282,41 @@ main > section:not(:first-of-type)::before {
 .bg-noise {
   opacity: var(--noise-opacity);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Faint display scanlines plus a slow sweep, like a heads-up display. */
+.bg-scanlines {
+  background: repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in oklab, var(--fg) 3%, transparent) 3px 4px);
+}
+.bg-scanbar {
+  height: 18vh;
+  background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--accent-3) 5%, transparent), transparent);
+  animation: scanbar 9s linear infinite;
+}
+@keyframes scanbar {
+  from {
+    transform: translateY(-20vh);
+  }
+  to {
+    transform: translateY(120vh);
+  }
+}
+
+/* Segmented, spinning ring of the hero's reactor core. */
+.reactor-ring {
+  background: repeating-conic-gradient(var(--accent-3) 0deg 13deg, transparent 13deg 20deg);
+  mask: radial-gradient(circle, transparent 60%, #000 61%, #000 71%, transparent 72%);
+  filter: drop-shadow(0 0 6px var(--accent-3));
+  animation: spin 22s linear infinite;
+}
+.reactor-pulse {
+  animation: reactor-pulse 3.2s ease-in-out infinite;
+}
+@keyframes reactor-pulse {
+  50% {
+    opacity: 0.55;
+    transform: scale(0.94);
+  }
 }
 
 .bg-glow {
@@ -433,6 +499,9 @@ main > section:not(:first-of-type)::before {
   }
   .bg-grid,
   .bg-glow,
+  .bg-scanbar,
+  .reactor-ring,
+  .reactor-pulse,
   .orbit-spin,
   .orbit-spin-reverse,
   .float-y,

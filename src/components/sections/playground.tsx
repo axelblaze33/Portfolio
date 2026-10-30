@@ -17,7 +17,7 @@ export function Playground() {
               Prefer the <Accent>command line</Accent>?
             </>
           }
-          intro="The whole site, as a tiny shell. Ask it about my skills, browse projects or jump to any section — try typing help."
+          intro="Meet A.T.L.A.S., this site's assistant. Ask it about my skills, browse projects or run a systems check — try typing help."
         />
         <Reveal>
           <Shell resumeHref={resumeHref} socials={activeSocials} />

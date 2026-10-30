@@ -45,7 +45,7 @@ export function Skills() {
           id="skills-title"
           title={
             <>
-              The <Accent>toolkit</Accent> behind the work.
+              The <Accent>arsenal</Accent> behind the work.
             </>
           }
           intro="Grouped by where they fit in an application — from the interface down to the data, plus the AI tooling I'm exploring next."

@@ -149,7 +149,7 @@ export function Navbar() {
             <ThemeToggle />
             <Link
               href="/#contact"
-              className="hidden min-h-10 items-center gap-1.5 rounded-full bg-fg px-4 text-sm font-medium text-bg transition-transform hover:-translate-y-0.5 active:scale-95 sm:inline-flex"
+              className="hidden min-h-10 items-center gap-1.5 rounded-full bg-accent px-4 text-sm font-medium text-accent-ink transition-transform hover:-translate-y-0.5 active:scale-95 sm:inline-flex"
             >
               Let&apos;s Talk
               <ArrowUpRight className="size-4" aria-hidden="true" />
@@ -208,7 +208,7 @@ export function Navbar() {
                 <Link
                   href="/#contact"
                   onClick={() => setOpen(false)}
-                  className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-fg text-base font-medium text-bg"
+                  className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-accent text-base font-medium text-accent-ink"
                 >
                   Let&apos;s Talk <ArrowUpRight className="size-4" aria-hidden="true" />
                 </Link>

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Chakra_Petch, Geist, Geist_Mono } from "next/font/google";
 import { BackToTop } from "@/components/layout/back-to-top";
 import { Background } from "@/components/layout/background";
 import { CommandPalette } from "@/components/layout/command-palette";
@@ -17,10 +17,10 @@ import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
+const chakraPetch = Chakra_Petch({
+  variable: "--font-chakra-petch",
   subsets: ["latin"],
-  weight: "400",
+  weight: ["500", "600", "700"],
   style: ["normal", "italic"],
 });
 
@@ -62,8 +62,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#060912" },
-    { media: "(prefers-color-scheme: light)", color: "#f5f7fc" },
+    { media: "(prefers-color-scheme: dark)", color: "#08070a" },
+    { media: "(prefers-color-scheme: light)", color: "#f8f5f0" },
   ],
   colorScheme: "dark light",
 };
@@ -74,7 +74,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       data-theme="dark"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${chakraPetch.variable} antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

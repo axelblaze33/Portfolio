@@ -39,7 +39,7 @@ export function NameBand() {
       <m.div style={{ x: backward }} className="-mt-[0.1em]">
         <Row
           items={roles}
-          className="text-gradient pb-[0.15em] font-serif text-[clamp(2.75rem,9vw,8.5rem)] leading-[1.05] tracking-[-0.02em] italic"
+          className="text-gradient pb-[0.15em] font-display font-semibold text-[clamp(2.75rem,9vw,8.5rem)] leading-[1.05] tracking-[-0.02em] italic"
         />
       </m.div>
     </div>
